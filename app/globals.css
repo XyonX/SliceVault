@@ -1,54 +1,114 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-/* @plugin "daisyui"; */
-/* @plugin "daisyui" {
-  themes: light --default, dark --prefersdark;
-  root: ":root";
-  include: button, input, select, card;
-  exclude: ;
-  prefix: ;
-  logs: true;
-} */
+/*
+---break---*/
 
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
+@layer base {
+  :root {
+    /* --- Existing Theme --- */
+    --background: 0 0% 98%; /* #FAFAFA */
+    --foreground: 0 0% 9%; /* #181818 */
+    --card: 0 0% 100%; /* #FFFFFF */
+    --card-foreground: 0 0% 9%; /* #181818 */
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 9%;
+    --primary: 150 100% 27%; /* #008A4A */
+    --primary-foreground: 0 0% 98%; /* #FAFAFA */
+    --secondary: 211 100% 37%; /* #005BBB */
+    --secondary-foreground: 0 0% 98%; /* #FAFAFA */
+    --muted: 0 0% 95%; /* Lighter Muted BG for Light Mode */
+    --muted-foreground: 0 0% 40%; /* #666666 */
+    --accent: 0 0% 95%; /* Matches Muted BG for Light Mode Accents */
+    --accent-foreground: 0 0% 9%; /* #181818 */
+    --warning: 32 96% 44%; /* #D97706 */
+    --warning-foreground: 0 0% 98%; /* #FAFAFA */
+    --destructive: 0 72% 57%; /* #E53E3E */
+    --destructive-foreground: 0 0% 98%; /* #FAFAFA */
+    --border: 0 0% 88%; /* #E0E0E0 */
+    --input: 0 0% 94%; /* #F0F0F0 */
+    --ring: 211 100% 37%; /* #005BBB */
+    --radius: 0.5rem;
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+    /* --- NEW: Chat & Code Theme --- */
+    /* Translating Radix slate-3/slate-12 for incoming bubble */
+    --chat-bubble-incoming-background: 0 0% 95%; /* #F1F1F1 - Light Gray */
+    --chat-bubble-incoming-foreground: 0 0% 9%; /* #181818 - Dark Text */
+    /* Translating Radix blue-9/white for outgoing bubble */
+    --chat-bubble-outgoing-background: 221 83% 53%; /* #3B82F6 - Stronger Blue */
+    --chat-bubble-outgoing-foreground: 0 0% 100%; /* #FFFFFF - White Text */
+    /* Standard light mode code block */
+    --code-block-background: 0 0% 96%; /* #F5F5F5 */
+    --code-block-foreground: 0 0% 20%; /* #333333 */
+    /* --font-mono will be defined by next/font */
   }
-  to {
-    transform: rotate(360deg);
+
+  .dark {
+    /* --- Existing Theme --- */
+    --background: 0 0% 9%; /* #181818 */
+    --foreground: 0 0% 97%; /* #F7F7F7 */
+    --card: 0 0% 14%; /* #242424 */
+    --card-foreground: 0 0% 94%; /* #F0F0F0 */
+    --popover: 0 0% 14%;
+    --popover-foreground: 0 0% 94%;
+    --primary: 150 100% 50%; /* #00FF85 */
+    --primary-foreground: 0 0% 9%; /* #181818 */
+    --secondary: 211 100% 56%; /* #1E90FF */
+    --secondary-foreground: 0 0% 98%; /* #FAFAFA */
+    --muted: 0 0% 16%; /* Darker Muted BG for Dark Mode */
+    --muted-foreground: 0 0% 63%; /* #A0A0A0 */
+    --accent: 0 0% 16%; /* Matches Muted BG for Dark Mode Accents */
+    --accent-foreground: 0 0% 97%; /* #F7F7F7 */
+    --warning: 36 100% 50%; /* #FF9500 */
+    --warning-foreground: 0 0% 9%; /* #181818 */
+    --destructive: 0 100% 65%; /* #FF4D4D */
+    --destructive-foreground: 0 0% 98%; /* #FAFAFA */
+    --border: 0 0% 20%; /* #333333 */
+    --input: 0 0% 16%; /* #2A2A2A */
+    --ring: 211 100% 56%; /* #1E90FF */
+    /* --radius is inherited */
+
+    /* --- NEW: Chat & Code Theme --- */
+    /* Translating Radix slate-3/slate-12 */
+    --chat-bubble-incoming-background: 0 0% 16%; /* #2A2A2A - Dark Gray */
+    --chat-bubble-incoming-foreground: 0 0% 94%; /* #F0F0F0 - Light Text */
+    /* Translating Radix blue-9/white */
+    --chat-bubble-outgoing-background: 211 100% 56%; /* #1E90FF - Electric Blue */
+    --chat-bubble-outgoing-foreground: 0 0% 100%; /* #FFFFFF - White Text */
+    /* Standard dark mode code block */
+    --code-block-background: 0 0% 12%; /* #1F1F1F */
+    --code-block-foreground: 0 0% 85%; /* #D9D9D9 */
+    /* --font-mono will be defined by next/font */
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+@layer base {
+  /* Apply base styles using theme variables */
+  body {
+    @apply bg-background text-foreground;
+    @apply font-sans; /* Apply the default sans-serif font (Inter) */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
-}
 
-.card {
-  padding: 2em;
-}
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-semibold tracking-tight;
+  }
 
-.read-the-docs {
-  color: #888;
+  /* Base focus ring */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-offset-2 ring-ring ring-offset-background;
+  }
+
+  /* --- NEW: Base style for code using the mono font --- */
+  code,
+  pre {
+    @apply font-mono;
+  }
 }
