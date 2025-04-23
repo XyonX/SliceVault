@@ -10,9 +10,9 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" className="scrollbar-hide">
       <AppProvider>
-        <body>
+        <body className="min-h-screen flex flex-col scrollbar-hide overflow-y-auto">
           <Header />
           {children}
         </body>

@@ -40,6 +40,16 @@ const Header = () => {
     return pathname === path;
   };
 
+  const copyAddress = () => {
+    if (userId) {
+      navigator.clipboard.writeText(userId);
+      // toast({
+      //   title: "Address Copied",
+      //   description: "Wallet address copied to clipboard",
+      // });
+    }
+  };
+
   return (
     <header className=" w-full px-4 py-3 border-b border-border flex items-center justify-between bg-background">
       <div className="flex items-center gap-8">
@@ -53,7 +63,7 @@ const Header = () => {
         <nav className="hidden md:flex items-center gap-6">
           {/* Always show Access Info link */}
           <Link
-            href="/AccessInfo"
+            href="/accessinfo"
             className={`text-sm hover:text-primary transition-colors flex items-center gap-1 ${
               isActivePath("/AccessInfo")
                 ? "text-primary font-medium"
