@@ -58,7 +58,7 @@ export function AppProvider({ children }) {
     async function load() {
       setIsLoading(true);
       try {
-        const res = await fetch("http://localhost:3001/files");
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/files`);
         if (!res.ok) throw new Error("Server not responding");
         const files = await res.json();
         if (!cancelled) {

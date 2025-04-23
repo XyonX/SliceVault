@@ -43,7 +43,7 @@ export default function Home() {
     formData.append("tag", fileTag);
 
     try {
-      const res = await fetch("http://localhost:3001/upload", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/upload`, {
         method: "post",
         body: formData,
         signal: abortController.signal,
