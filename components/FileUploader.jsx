@@ -17,66 +17,68 @@ const FileUploader = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // if (!userId) {
-    //   toast({
-    //     title: "Not Connected",
-    //     description: "Please connect your wallet before uploading",
-    //     variant: "destructive"
-    //   });
-    //   return;
-    // }
+    if (!userId) {
+      alert("Please connect your wallet before uploading.");
+      return;
+    }
 
-    // if (!file) {
-    //   toast({
-    //     title: "No File Selected",
-    //     description: "Please select a file to upload",
-    //     variant: "destructive"
-    //   });
-    //   return;
-    // }
+    if (!file) {
+      alert("Please select a file to upload.");
+      return;
+    }
 
     const abortController = new AbortController();
     setController(abortController);
 
     setIsUploading(true);
-    setIsSuccess(false);
+    setIsSuccess(false); // reset success
 
-    setTimeout(() => {
-      if (abortController.signal.aborted) return;
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("userId", userId);
+    formData.append("description", fileDescription);
+    formData.append("tag", fileTag);
 
-      const mockCID =
-        "Qm" +
-        Math.random().toString(36).substring(2, 15) +
-        Math.random().toString(36).substring(2, 15);
+    try {
+      const res = await fetch("http://localhost:3001/upload", {
+        method: "post",
+        body: formData,
+        signal: abortController.signal,
+      });
 
-      const newFile = {
-        id: Math.random().toString(36).substring(7),
-        name: file.name,
-        description: fileDescription,
-        tag: fileTag,
-        uploadedAt: new Date().toISOString(),
-        size: file.size,
-        cid: mockCID,
-        userId: userId,
-      };
+      if (res.ok) {
+        const data = await res.json();
+        console.log("Upload successful:", data);
+        setIsSuccess(true);
+        setFile(null); // reset file
+        const newFile = {
+          id: Math.random().toString(36).substring(7),
+          name: file.name,
+          description: fileDescription,
+          tag: fileTag,
+          uploadedAt: new Date().toISOString(),
+          size: file.size,
+          cid: data.ipfsHash,
+          transaction: data.txHash,
+          userId: userId,
+          explorer: data.explorer,
+        };
 
-      addFile(newFile);
-      setIsSuccess(true);
+        addFile(newFile);
+      } else {
+        alert("Upload failed.");
+      }
+    } catch (err) {
+      if (err.name === "AbortError") {
+        console.log("Upload canceled by user.");
+      } else {
+        console.error("Upload error:", err);
+        alert("Something went wrong.");
+      }
+    } finally {
       setIsUploading(false);
-      setController(null);
-
-      // toast({
-      //   title: "Upload Successful",
-      //   description: `${file.name} has been uploaded to the network`,
-      // });
-
-      setTimeout(() => {
-        setFile(null);
-        setFileDescription("");
-        setFileTag("default");
-        setIsSuccess(false);
-      }, 2000);
-    }, 2000);
+      setController(null); // reset controller
+    }
   };
 
   const handleFileChange = (e) => {
