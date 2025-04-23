@@ -40,7 +40,7 @@ const FileUploader = () => {
     formData.append("tag", fileTag);
 
     try {
-      const res = await fetch("http://localhost:3001/upload", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/upload`, {
         method: "post",
         body: formData,
         signal: abortController.signal,
@@ -48,7 +48,7 @@ const FileUploader = () => {
 
       if (res.ok) {
         const data = await res.json();
-        console.log("Upload successful:", data);
+        console.log("Upload successful,data received:", data);
         setIsSuccess(true);
         setFile(null); // reset file
         const newFile = {
