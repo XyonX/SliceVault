@@ -65,7 +65,7 @@ const Header = () => {
           <Link
             href="/accessinfo"
             className={`text-sm hover:text-primary transition-colors flex items-center gap-1 ${
-              isActivePath("/AccessInfo")
+              isActivePath("/accessinfo")
                 ? "text-primary font-medium"
                 : "text-muted-foreground"
             }`}

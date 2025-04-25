@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { useAppContext } from "@/app/AppProvider";
 import { File, Search } from "lucide-react";
-
+import FileDetailsDialog from "./FileDetailsDialog";
 const FileList = () => {
   const { userFiles, userId } = useAppContext();
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
+  console.log("user Files", userFiles);
   if (!userId) {
     return (
       <div className="border-box h-full flex flex-col items-center justify-center">
@@ -69,8 +72,12 @@ const FileList = () => {
           <div className="grid grid-cols-1 gap-2">
             {filteredFiles.map((file) => (
               <div
-                key={file.id}
+                key={file.fileId}
                 className="border border-border rounded-sm p-3 hover:border-primary transition-colors cursor-pointer"
+                onClick={() => {
+                  setSelectedFile(file);
+                  setIsDialogOpen(true);
+                }}
               >
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-secondary rounded-sm">
@@ -82,14 +89,16 @@ const FileList = () => {
                       {file.description}
                     </p>
                     <div className="flex items-center gap-2 mt-1">
-                      <span className="text-xs bg-secondary px-1.5 py-0.5 rounded-sm">
-                        {file.tag}
-                      </span>
+                      {file.tag && (
+                        <span className="text-xs bg-secondary px-1.5 py-0.5 rounded-sm">
+                          {file.tag}
+                        </span>
+                      )}
                       <span className="text-xs text-muted-foreground">
                         {formatFileSize(file.size)}
                       </span>
                       <span className="text-xs text-muted-foreground">
-                        {formatDate(file.uploadedAt)}
+                        {formatDate(file.timestamp)}
                       </span>
                     </div>
                   </div>
@@ -103,6 +112,12 @@ const FileList = () => {
           </p>
         )}
       </div>
+
+      <FileDetailsDialog
+        file={selectedFile}
+        open={isDialogOpen}
+        onOpenChange={setIsDialogOpen}
+      />
     </div>
   );
 };

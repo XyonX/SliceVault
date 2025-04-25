@@ -21,6 +21,7 @@ const FileUploader = () => {
       alert("Please connect your wallet before uploading.");
       return;
     }
+    console.log("User wallet address to be send:", userId);
 
     if (!file) {
       alert("Please select a file to upload.");
