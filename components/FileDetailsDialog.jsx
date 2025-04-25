@@ -8,13 +8,45 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { File, Download, ExternalLink, Copy } from "lucide-react";
+import { useState } from "react";
 // import { useToast } from "@/hooks/use-toast";
 
 const FileDetailsDialog = ({ file, open, onOpenChange }) => {
   //   const { toast } = useToast();
-
+  const [isDownloading, setIsDownloading] = useState(false);
   if (!file) return null;
+  const handleDownload = async () => {
+    if (!file) return;
 
+    setIsDownloading(true);
+    try {
+      const ipfsUrl = `https://ipfs.io/ipfs/${file.ipfsHash}`;
+      const response = await fetch(ipfsUrl);
+
+      if (!response.ok) {
+        throw new Error(`Download failed: ${response.status}`);
+      }
+
+      const blob = await response.blob();
+      const downloadUrl = window.URL.createObjectURL(blob);
+
+      // Create temporary anchor element
+      const link = document.createElement("a");
+      link.href = downloadUrl;
+      link.download = file.name;
+      document.body.appendChild(link);
+      link.click();
+
+      // Cleanup
+      window.URL.revokeObjectURL(downloadUrl);
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Download error:", error);
+      // Add toast notification here if needed
+    } finally {
+      setIsDownloading(false);
+    }
+  };
   const formatDate = (timestamp) => {
     const date = new Date(timestamp);
     return date.toLocaleDateString("en-US", {
@@ -123,9 +155,9 @@ const FileDetailsDialog = ({ file, open, onOpenChange }) => {
                 View on IPFS
               </a>
             </Button>
-            <Button>
+            <Button onClick={handleDownload} disabled={isDownloading}>
               <Download className="mr-2" />
-              Download
+              {isDownloading ? "Downloading..." : "Download"}
             </Button>
           </div>
         </div>
