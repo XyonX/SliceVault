@@ -10,10 +10,24 @@ const Header = () => {
   const [showProfile, setShowProfile] = useState(false);
 
   const connectWallet = async () => {
-    if (typeof window.ethereum === "undefined") {
+    // Detect if the user is on a mobile device
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+    if (isMobile && !window.ethereum) {
+      // If on mobile and no window.ethereum, prompt to open MetaMask
+      const deepLink = "https://metamask.app.link/dapp/" + window.location.href;
+      window.open(deepLink, "_blank");
+      alert(
+        "Please open this dApp in the MetaMask in-app browser or install MetaMask."
+      );
+      return;
+    }
+
+    if (!window.ethereum) {
       alert("Please install MetaMask to connect your wallet.");
       return;
     }
+
     setShowProfile(!showProfile);
 
     try {
