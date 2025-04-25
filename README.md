@@ -16,7 +16,7 @@ SliceVault allows users to:
 
 The application consists of a React-based frontend and a Node.js backend, hosted in separate repositories:
 
-- **Frontend**: [https://github.com/XyonX/slice.git](https://github.com/XyonX/slice.git)
+- **Frontend**: [https://github.com/XyonX/slice.git](https://github.com/XyonX/SliceVault.git)
 - **Backend**: [https://github.com/XyonX/slice-backend.git](https://github.com/XyonX/slice-backend.git)
 
 Try it live at [SliceVault](https://slicevault.vercel.app/).
