@@ -4,7 +4,7 @@ import { useAppContext } from "../AppProvider";
 // import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 
-const AccessInfo = () => {
+const page = () => {
   const { userId } = useAppContext();
   // const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("overview");
@@ -422,4 +422,4 @@ const localUrl = \`http://localhost:8080/ipfs/\${ipfsHash}\`;`}
   );
 };
 
-export default AccessInfo;
+export default page;

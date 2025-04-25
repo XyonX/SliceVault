@@ -77,9 +77,9 @@ const Header = () => {
         <nav className="hidden md:flex items-center gap-6">
           {/* Always show Access Info link */}
           <Link
-            href="/accessinfo"
+            href="/access-info"
             className={`text-sm hover:text-primary transition-colors flex items-center gap-1 ${
-              isActivePath("/accessinfo")
+              isActivePath("/access-info")
                 ? "text-primary font-medium"
                 : "text-muted-foreground"
             }`}
